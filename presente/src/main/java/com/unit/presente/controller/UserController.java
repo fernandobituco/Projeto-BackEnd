@@ -28,8 +28,8 @@ public class UserController {
     final IUserService userService;
     
     final Map<String, String> headers = Stream.of(new String[][] {
-        {"X-RapidAPI-Key", "c583fa23fdmsh1f477f3deff7695p170de2jsn6e03541b901e"},
-        {"X-RapidAPI-Host", "facts-by-api-ninjas.p.rapidapi.com"}
+        {"X-RapidAPI-Key", "a"},
+        {"X-RapidAPI-Host", "a"}
     }).collect(Collectors.toMap(data -> (String) data[0], data -> (String) data[1]));
 
     public UserController(IUserService userService) {
