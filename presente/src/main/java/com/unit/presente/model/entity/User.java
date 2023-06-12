@@ -36,6 +36,9 @@ public class User {
     @Column(name = "Email")
     public String email;
 
+    @Column(name = "Role")
+    public String role;
+
     public User(UserVO userVo) {
         this.name = userVo.name;
         this.cpf = userVo.cpf;
