@@ -1,6 +1,9 @@
 package com.unit.presente.controller;
 
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.unit.presente.commom.HttpRequest;
 import com.unit.presente.model.VO.UserVO;
-import com.unit.presente.model.entity.User;
 import com.unit.presente.service.interfaces.IUserService;
 
 
@@ -24,6 +27,11 @@ public class UserController {
 
     final IUserService userService;
     
+    final Map<String, String> headers = Stream.of(new String[][] {
+        {"X-RapidAPI-Key", "c583fa23fdmsh1f477f3deff7695p170de2jsn6e03541b901e"},
+        {"X-RapidAPI-Host", "facts-by-api-ninjas.p.rapidapi.com"}
+    }).collect(Collectors.toMap(data -> (String) data[0], data -> (String) data[1]));
+
     public UserController(IUserService userService) {
         this.userService = userService;
     }
@@ -35,8 +43,21 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody UserVO user) {
-        User newUser = userService.create(user);
-        return ResponseEntity.ok().body(newUser);
+
+        String fact = new String();
+        try {
+            userService.create(user);
+
+            HttpRequest request = HttpRequest
+                .get("https://facts-by-api-ninjas.p.rapidapi.com/v1/facts")
+                .headers(headers)
+                .connectTimeout(1000000);
+            fact = request.body();
+        }catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+
+        return ResponseEntity.ok().body(fact);
     }
 
     @PutMapping("/{id}")

@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.unit.presente.model.VO.UserVO;
 import com.unit.presente.model.entity.User;
@@ -17,6 +19,11 @@ import jakarta.transaction.Transactional;
 public class UserServiceImpl implements IUserService {
 
     final UserRepository userRepository;
+
+    @Autowired
+    WebClient webClient;
+
+    // private static final Logger logger = LogManager.getLogger(Fact.class);
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
