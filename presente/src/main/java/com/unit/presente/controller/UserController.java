@@ -1,9 +1,6 @@
 package com.unit.presente.controller;
 
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.unit.presente.commom.HttpRequest;
 import com.unit.presente.model.VO.UserVO;
 import com.unit.presente.service.interfaces.IUserService;
 
@@ -26,11 +22,6 @@ import com.unit.presente.service.interfaces.IUserService;
 public class UserController {
 
     final IUserService userService;
-    
-    final Map<String, String> headers = Stream.of(new String[][] {
-        {"X-RapidAPI-Key", "a"},
-        {"X-RapidAPI-Host", "a"}
-    }).collect(Collectors.toMap(data -> (String) data[0], data -> (String) data[1]));
 
     public UserController(IUserService userService) {
         this.userService = userService;
@@ -47,12 +38,6 @@ public class UserController {
         String fact = new String();
         try {
             userService.create(user);
-
-            HttpRequest request = HttpRequest
-                .get("https://facts-by-api-ninjas.p.rapidapi.com/v1/facts")
-                .headers(headers)
-                .connectTimeout(1000000);
-            fact = request.body();
         }catch(Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

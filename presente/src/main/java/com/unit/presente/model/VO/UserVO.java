@@ -1,12 +1,19 @@
 package com.unit.presente.model.VO;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class UserVO {
 
-    public String name;
+    String name;
 
-    public String cpf;
+    String cpf;
 
-    public String password;
+    String password;
 
-    public String email;
+    String email;
+
+    String role;
 }
