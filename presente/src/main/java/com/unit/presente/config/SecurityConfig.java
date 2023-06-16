@@ -36,10 +36,11 @@ public class SecurityConfig {
         http.csrf(CsrfConfigurer::disable)
         .authorizeHttpRequests((requests) -> requests
             .requestMatchers(SWAGGER_WHITELIST).permitAll()
-            .anyRequest().authenticated()
+            .requestMatchers("/user/**").hasRole("ADMIN").anyRequest().authenticated()
         )
         .headers(header -> header.frameOptions(FrameOptionsConfig::disable))
         .formLogin((form) -> form.permitAll())
+        .logout((form) -> form.permitAll(false))
         .httpBasic(Customizer.withDefaults());
 
         return http.build();
